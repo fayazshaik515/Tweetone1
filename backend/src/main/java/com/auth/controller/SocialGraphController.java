@@ -30,7 +30,7 @@ public class SocialGraphController {
         try {
             socialGraphService.followUser(followerId, followingId);
             return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

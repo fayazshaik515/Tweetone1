@@ -96,4 +96,14 @@ public class FeedService {
         logger.info("Found {} tweets in feed", tweets.size());
         return new PageImpl<>(tweets, pageable, userFeeds.getTotalElements());
     }
+        @Transactional(readOnly = true)
+    public Page<Tweet> getAllFeeds(Pageable pageable) {
+        logger.info("Fetching feed for all users");
+        Page<UserFeed> allFeeds = userFeedRepository.findAllByOrderByCreatedAtDesc(pageable);
+        List<Tweet> tweets = allFeeds.stream()
+                .map(UserFeed::getTweet)
+                .collect(Collectors.toList());
+        logger.info("Found {} tweets in all users' feed", tweets.size());
+        return new PageImpl<>(tweets, pageable, allFeeds.getTotalElements());
+    }
 }

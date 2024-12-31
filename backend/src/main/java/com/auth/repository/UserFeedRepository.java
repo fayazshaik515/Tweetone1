@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 @Repository
 public interface UserFeedRepository extends JpaRepository<UserFeed, Long> {
     Page<UserFeed> findByUserOrderByCreatedAtDesc(User user, Pageable pageable);
@@ -20,6 +22,11 @@ public interface UserFeedRepository extends JpaRepository<UserFeed, Long> {
     @Query("DELETE FROM UserFeed uf WHERE uf.user.id = :followerId AND uf.tweet.user.id = :unfollowedUserId")
     int deleteByUserAndTweetUser(@Param("followerId") Long followerId, @Param("unfollowedUserId") Long unfollowedUserId);
 
-    // Add a method to find feed entries to delete
+    Page<UserFeed> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    //Add a method to find feed entries to delete
     List<UserFeed> findByUserIdAndTweetUserId(Long userId, Long tweetUserId);
+    
+    
+
 }
